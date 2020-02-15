@@ -1,17 +1,26 @@
-n = int(input())
-cars_places = dict()
-ans = []
-for i in range(n):
-    cmd = input().split()
-    if len(cmd) == 5:
-        # drove into place
-        cars_places[cmd[0]] = cmd[4]
-    elif cmd[1] == "drove":
-        # drove out
-        del cars_places[cmd[0]]
-    else:
-        # look at
-        res = cars_places.get(cmd[2], None)
-        ans.append('Not here' if res is None else res)
+def chess_to_cartesian(coord):
+    letter = coord[0]
+    num = coord[1]
+    return ord(letter) - ord('a'), int(num) - 1
 
-print(*ans, sep='\n')
+
+def possible(coord):
+    if coord in coords:
+        return False
+    return not (coord[0] < 0 or coord[0] > 7 or coord[1] < 0 or coord[1] > 7)
+
+
+knight, n = map(str, input().split())
+n = int(n)
+knight = chess_to_cartesian(knight)
+coords = set([chess_to_cartesian(i) for i in input().split()])
+lu = knight[0] - 2, knight[1] + 1
+ld = knight[0] - 2, knight[1] - 1
+ur = knight[0] + 1, knight[1] + 2
+ul = knight[0] - 1, knight[1] + 2
+ru = knight[0] + 2, knight[1] + 1
+rd = knight[0] + 2, knight[1] - 1
+dr = knight[0] + 1, knight[1] - 2
+dl = knight[0] - 1, knight[1] - 2
+available = [i for i in [lu, ld, ur, ul, ru, rd, dr, dl] if possible(i)]
+print(len(available))
